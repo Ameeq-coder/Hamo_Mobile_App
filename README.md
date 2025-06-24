@@ -1,4 +1,4 @@
-# hamo
+# Hamo
 
 Service Based Platform
 
