@@ -214,7 +214,7 @@ class SocialIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: FaIcon(icon, size: 20),
+        child: FaIcon(icon, size: 19),
       ),
     );
   }
