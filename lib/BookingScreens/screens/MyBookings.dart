@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../Home/Screens/CacelledScreen.dart';
+import '../../Common/BottomSheet.dart';
+import 'CacelledScreen.dart';
+import 'CompletedScreen.dart';
+import 'UpcomingScreen.dart';
 
 
 
@@ -53,8 +56,8 @@ class MyBookingMain extends StatelessWidget {
               const Expanded(
                 child: TabBarView(
                   children: [
-                    Center(child: Text("Upcoming Screen")),
-                    Center(child: Text("Completed Screen")),
+                    UpcomingScreen(),
+                    CompletedScreen(),
                     CancelledScreen(),
                   ],
                 ),
@@ -62,6 +65,7 @@ class MyBookingMain extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar:  BottomNavigation(currentIndex: 0,),
       ),
     );
   }

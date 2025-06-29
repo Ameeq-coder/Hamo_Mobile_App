@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       create: (_) => AuthBloc(AuthRepository()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MyBookingMain(),
+        home: Home(),
       ),
     );
   }

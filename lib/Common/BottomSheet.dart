@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hamo/BookingScreens/screens/MyBookings.dart';
 
 // Dummy Screens
 import '../Authentication/bloc/auth/Login_Bloc.dart';
@@ -26,7 +27,15 @@ class BottomNavigation extends StatelessWidget {
         );
         break;
       case 1:
-      // Get.to(() => UserDownload());
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => LoginBloc(AuthRepository()),
+              child: const MyBookingMain(),
+            ),
+          ),
+        );
         break;
       case 2:
         break;
