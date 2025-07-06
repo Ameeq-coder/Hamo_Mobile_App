@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/AllBookingBloc.dart';
+import '../bloc/AllBookingState.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});
@@ -9,47 +11,102 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
-  List<bool> isExpanded = [true, false]; // control for each card
+  List<bool> isExpanded = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            BookingCard(
-              isOpen: isExpanded[0],
-              onToggle: () {
-                setState(() {
-                  isExpanded[0] = !isExpanded[0];
-                });
+    return BlocBuilder<AllBookingBloc, AllBookingState>(
+      builder: (context, state) {
+        if (state is AllBookingLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is AllBookingLoaded) {
+          final bookings = state.bookings
+              .where((b) => b.status.toLowerCase() == "completed")
+              .toList();
+
+          if (isExpanded.length != bookings.length) {
+            isExpanded = List.generate(bookings.length, (_) => false);
+          }
+
+          if (bookings.isEmpty) {
+            return Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/NoBooking.PNG', height: 200),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "You have no completed booking",
+                        style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "You do not have any completed bookings.\nMake a new booking by clicking the button below.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: navigate to booking screen
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          child: const Text("Make New Booking",
+                              style:
+                              TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return Scaffold(
+            backgroundColor: const Color(0xffF6F6F6),
+            body: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: bookings.length,
+              itemBuilder: (context, index) {
+                final booking = bookings[index];
+                return BookingCard(
+                  isOpen: isExpanded[index],
+                  onToggle: () {
+                    setState(() {
+                      isExpanded[index] = !isExpanded[index];
+                    });
+                  },
+                  name: booking.serviceType,
+                  person: booking.serviceManName,
+                  dateTime: booking.bookingDateTime.toLocal().toString(),
+                  location: booking.location,
+                  profileUrl:
+                  "https://i.pravatar.cc/150?u=${booking.servicemanId}",
+                  status: "Completed",
+                );
               },
-              name: "Home Cleaning",
-              person: "Maryland Wrinkles",
-              dateTime: "Dec 12, 2024 | 13:00 - 15:00 PM",
-              location: "1691 Carpenter Pass",
-              profileUrl: "https://i.pravatar.cc/150?img=12",
-              status: "Completed",
             ),
-            BookingCard(
-              isOpen: isExpanded[1],
-              onToggle: () {
-                setState(() {
-                  isExpanded[1] = !isExpanded[1];
-                });
-              },
-              name: "Laundry Services",
-              person: "Aileen Fullbright",
-              dateTime: "Dec 08, 2024 | 09:00 - 11:00 AM",
-              location: "08009 Anhalt Alley",
-              profileUrl: "https://i.pravatar.cc/150?img=5",
-              status: "Completed",
-            ),
-          ],
-        ),
-      ),
+          );
+        } else if (state is AllBookingError) {
+          return Center(child: Text("Error: ${state.message}"));
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 }
@@ -77,7 +134,7 @@ class BookingCard extends StatelessWidget {
   });
 
   Color getStatusColor(String status) {
-    if (status == "Completed") return Colors.green;
+    if (status.toLowerCase() == "completed") return Colors.green;
     return Colors.purple;
   }
 
@@ -100,7 +157,6 @@ class BookingCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Top row
           Row(
             children: [
               CircleAvatar(radius: 28, backgroundImage: NetworkImage(profileUrl)),
@@ -110,7 +166,8 @@ class BookingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(name,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
                     Text(person, style: const TextStyle(fontSize: 12)),
                     const SizedBox(height: 4),
                     Container(
@@ -120,24 +177,21 @@ class BookingCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(status,
-                          style: TextStyle(color: getStatusColor(status), fontSize: 11)),
+                          style: TextStyle(
+                              color: getStatusColor(status), fontSize: 11)),
                     )
                   ],
                 ),
               ),
               IconButton(
                 icon: const Icon(Icons.message),
-                onPressed: () {
-                  // Handle message
-                },
+                onPressed: () {},
               )
             ],
           ),
-
           if (isOpen) ...[
             const SizedBox(height: 16),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.calendar_today, size: 16, color: Colors.black54),
                 const SizedBox(width: 8),
@@ -146,7 +200,6 @@ class BookingCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.location_on, size: 16, color: Colors.black54),
                 const SizedBox(width: 8),
@@ -154,35 +207,20 @@ class BookingCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Container(
-              height: 140,
-              decoration: BoxDecoration(
-                color: Colors.purple.shade50,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Icon(Icons.location_pin, size: 48, color: Colors.purple),
-              ),
-            ),
-            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // View e-receipt action
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
-                child: const Text("View E-Receipt",style: TextStyle(
-                  color: Colors.white
-                ),),
+                child: const Text("View E-Receipt",
+                    style: TextStyle(color: Colors.white)),
               ),
             ),
           ],
-
           const SizedBox(height: 12),
           Center(
             child: IconButton(

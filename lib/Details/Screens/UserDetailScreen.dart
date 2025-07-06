@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../../Home/Screens/Home.dart';
 import '../bloc/details/user_detail_bloc.dart';
 import '../bloc/details/user_detail_event.dart';
 import '../bloc/details/user_detail_state.dart';
@@ -135,6 +136,13 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Profile updated successfully!')),
             );
+            Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const Home()),
+              );
+            });
+
           } else if (state is UserDetailFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),

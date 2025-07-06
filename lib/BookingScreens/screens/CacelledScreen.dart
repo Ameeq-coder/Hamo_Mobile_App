@@ -1,115 +1,191 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/AllBookingBloc.dart';
+import '../bloc/AllBookingState.dart';
 
-class CancelledScreen extends StatelessWidget {
+class CancelledScreen extends StatefulWidget {
   const CancelledScreen({super.key});
 
-  final List<Map<String, String>> cancelledItems = const [
-    {
-      'title': 'Plumbing Repair',
-      'name': 'Chantal Shelburne',
-      'image': 'https://i.imgur.com/1O1bEZp.png'
-    },
-    {
-      'title': 'Appliance Service',
-      'name': 'Benny Spanbauer',
-      'image': 'https://i.imgur.com/qS1ElRQ.png'
-    },
-    {
-      'title': 'Laundry Services',
-      'name': 'Phyllis Godley',
-      'image': 'https://i.imgur.com/EkmfKk5.png'
-    },
-  ];
+  @override
+  State<CancelledScreen> createState() => _CancelledScreenState();
+}
+
+class _CancelledScreenState extends State<CancelledScreen> {
+  List<bool> isExpanded = [];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: cancelledItems.length,
-      itemBuilder: (context, index) {
-        final item = cancelledItems[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 5,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        item['image']!,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
+    return BlocBuilder<AllBookingBloc, AllBookingState>(
+      builder: (context, state) {
+        if (state is AllBookingLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is AllBookingLoaded) {
+          final cancelledBookings = state.bookings
+              .where((booking) => booking.status.toLowerCase() == 'cancelled')
+              .toList();
+
+          if (cancelledBookings.isEmpty) {
+            return Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/NoBooking.PNG', height: 200),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "You have no cancelled booking",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['title']!,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "You do not have any cancelled bookings.\nMake a new booking by clicking the button below.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: navigate to booking screen
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item['name']!,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.red.shade100,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text(
-                              'Cancelled',
+                          child: const Text("Make New Booking",
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12),
+                                  fontSize: 16, color: Colors.white)),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+
+          if (isExpanded.length != cancelledBookings.length) {
+            isExpanded = List.generate(cancelledBookings.length, (_) => false);
+          }
+
+          return Scaffold(
+            backgroundColor: const Color(0xffF6F6F6),
+            body: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: cancelledBookings.length,
+              itemBuilder: (context, index) {
+                final item = cancelledBookings[index];
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 28,
+                            backgroundImage: NetworkImage(
+                                'https://i.pravatar.cc/150?u=${item.servicemanId}'),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item.serviceType,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16)),
+                                Text(item.serviceManName,
+                                    style: const TextStyle(fontSize: 12)),
+                                const SizedBox(height: 4),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Text("Cancelled",
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 11)),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.purple.shade100,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.message,
+                                size: 20, color: Colors.purple),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_today,
+                              size: 16, color: Colors.black54),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              item.bookingDateTime
+                                  .toLocal()
+                                  .toString()
+                                  .replaceFirst('T', ' '),
+                              style: const TextStyle(fontSize: 13),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.purple.shade100,
-                        shape: BoxShape.circle,
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              size: 16, color: Colors.black54),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(item.location,
+                                style: const TextStyle(fontSize: 13)),
+                          ),
+                        ],
                       ),
-                      child: const Icon(
-                        Icons.message,
-                        color: Colors.purple,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.keyboard_arrow_down, size: 28),
-              const SizedBox(height: 10),
-            ],
-          ),
-        );
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        } else if (state is AllBookingError) {
+          return Center(child: Text(state.message));
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }

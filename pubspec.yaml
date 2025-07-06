@@ -39,6 +39,7 @@ flutter:
   uses-material-design: true
   assets:
      - packages/intl_phone_field/assets/flags/
+     - assets/images/
 
 
 
