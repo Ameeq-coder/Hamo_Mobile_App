@@ -6,8 +6,13 @@ import 'package:hamo/Authentication/bloc/auth/auth_bloc.dart';
 import 'package:hamo/Authentication/repository/auth_repository.dart';
 
 import 'BookingScreens/screens/MyBookings.dart';
+import 'Calender/Bloc/CalendarBookingBloc.dart';
+import 'Calender/Repositry/CalendarBookingRepository.dart';
 import 'Calender/calenderscreen.dart';
 import 'Details/Screens/UserDetailScreen.dart';
+import 'Profile/Profile.dart';
+import 'Profile/Repositry/profile_repository.dart';
+import 'Profile/bloc/profile_bloc.dart';
 import 'Services/Screens/AllServiceScreen.dart';
 import 'Home/Screens/Home.dart';
 
@@ -17,10 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthBloc(AuthRepository()),
+      create: (_) => ProfileBloc(ProfileRepository()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: CalendarScreen(),
+        home: ProfileScreen(),
       ),
     );
   }
