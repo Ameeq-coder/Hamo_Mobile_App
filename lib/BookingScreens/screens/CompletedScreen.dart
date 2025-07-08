@@ -94,8 +94,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   person: booking.serviceManName,
                   dateTime: booking.bookingDateTime.toLocal().toString(),
                   location: booking.location,
-                  profileUrl:
-                  "https://i.pravatar.cc/150?u=${booking.servicemanId}",
+                  profileUrl: booking.serviceman.detail.imageUrl,
                   status: "Completed",
                 );
               },

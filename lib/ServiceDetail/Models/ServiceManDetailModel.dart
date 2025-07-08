@@ -1,6 +1,4 @@
-class AllServiceman {
-  final String id;
-  final String servicemenid;
+class ServiceDetail {
   final String name;
   final String serviceHead;
   final String category;
@@ -8,11 +6,8 @@ class AllServiceman {
   final int price;
   final String about;
   final String imageUrl;
-  final String serviceType;
 
-  AllServiceman({
-    required this.id,
-    required this.servicemenid,
+  ServiceDetail({
     required this.name,
     required this.serviceHead,
     required this.category,
@@ -20,13 +15,10 @@ class AllServiceman {
     required this.price,
     required this.about,
     required this.imageUrl,
-    required this.serviceType,
   });
 
-  factory AllServiceman.fromJson(Map<String, dynamic> json) {
-    return AllServiceman(
-      id: json['id'],
-      servicemenid: json['servicemanId'],
+  factory ServiceDetail.fromJson(Map<String, dynamic> json) {
+    return ServiceDetail(
       name: json['name'],
       serviceHead: json['serviceHead'],
       category: json['category'],
@@ -34,7 +26,6 @@ class AllServiceman {
       price: json['price'],
       about: json['about'],
       imageUrl: json['imageUrl'],
-      serviceType: json['serviceman']['serviceType'],
     );
   }
 }

@@ -1,5 +1,6 @@
 // all_booking_state.dart
 import 'package:equatable/equatable.dart';import '../models/AllBookingmodel.dart';
+import 'AllBookingEvent.dart';
 
 
 abstract class AllBookingState extends Equatable {
@@ -27,4 +28,25 @@ class AllBookingError extends AllBookingState {
 
   @override
   List<Object?> get props => [message];
+}
+
+
+class CompleteBookingEvent extends AllBookingEvent {
+  final String bookingId;
+  final String userId; // to refetch updated bookings
+
+  CompleteBookingEvent({required this.bookingId, required this.userId});
+
+  @override
+  List<Object?> get props => [bookingId, userId];
+}
+
+class CancelBookingEvent extends AllBookingEvent {
+  final String bookingId;
+  final String userId; // to refetch updated bookings
+
+  CancelBookingEvent({required this.bookingId, required this.userId});
+
+  @override
+  List<Object?> get props => [bookingId, userId];
 }

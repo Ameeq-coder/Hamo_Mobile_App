@@ -4,6 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 
 import '../../Common/BottomSheet.dart';
+import '../../ServiceDetail/Bloc/ServiceManDetailBloc.dart';
+import '../../ServiceDetail/Repositry/ServiceManDetailRepository.dart';
+import '../../ServiceDetail/Screens/ServiceDetailScreen.dart';
 import '../bloc/AllServiceEvent.dart';
 import '../bloc/AllServiceManBloc.dart';
 import '../bloc/AllServiceManState.dart';
@@ -237,44 +240,57 @@ class _HomeState extends State<Home> {
                                 separatorBuilder: (_, __) => const SizedBox(height: 16),
                                 itemBuilder: (context, index) {
                                   final item = servicemen[index];
-                                  return Container(
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: const [BoxShadow(blurRadius: 6, color: Colors.black12, offset: Offset(0, 3))],
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: Image.network(
-                                            item.imageUrl,
-                                            height: 80,
-                                            width: 80,
-                                            fit: BoxFit.cover,
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => BlocProvider(
+                                            create: (_) => ServiceDetailBloc(ServiceDetailRepository()),
+                                            child:  ServiceDetailScreen(serviceManId: item.servicemenid,),
                                           ),
                                         ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(item.name, style: const TextStyle(fontSize: 13, color: Colors.grey)),
-                                              const SizedBox(height: 4),
-                                              Text(item.serviceHead, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                                              const SizedBox(height: 6),
-                                              Text("Rs ${item.price}", style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold)),
-                                              const SizedBox(height: 4),
-                                              Text(item.category, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                                            ],
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                        boxShadow: const [BoxShadow(blurRadius: 6, color: Colors.black12, offset: Offset(0, 3))],
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(12),
+                                            child: Image.network(
+                                              item.imageUrl,
+                                              height: 80,
+                                              width: 80,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.bookmark_border, color: Colors.deepPurple),
-                                          onPressed: () {},
-                                        ),
-                                      ],
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(item.name, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+                                                const SizedBox(height: 4),
+                                                Text(item.serviceHead, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                                                const SizedBox(height: 6),
+                                                Text("Rs ${item.price}", style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold)),
+                                                const SizedBox(height: 4),
+                                                Text(item.category, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                              ],
+                                            ),
+                                          ),
+                                          // IconButton(
+                                          //   icon: const Icon(Icons.bookmark_border, color: Colors.deepPurple),
+                                          //   onPressed: () {},
+                                          // ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

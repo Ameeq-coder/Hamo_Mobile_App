@@ -6,7 +6,13 @@ import 'package:hamo/BookingScreens/screens/MyBookings.dart';
 // Dummy Screens
 import '../Authentication/bloc/auth/Login_Bloc.dart';
 import '../Authentication/repository/auth_repository.dart';
+import '../Calender/Bloc/CalendarBookingBloc.dart';
+import '../Calender/Repositry/CalendarBookingRepository.dart';
+import '../Calender/calenderscreen.dart';
 import '../Home/Screens/Home.dart';
+import '../Profile/Profile.dart';
+import '../Profile/Repositry/profile_repository.dart';
+import '../Profile/bloc/profile_bloc.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -38,12 +44,29 @@ class BottomNavigation extends StatelessWidget {
         );
         break;
       case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => CalendarBookingBloc(CalendarBookingRepository()),
+              child:  CalendarScreen(),
+            ),
+          ),
+        );
         break;
       case 3:
       // Get.to(() => UserFavorites());
         break;
       case 4:
-      // Get.to(() => UserProfileScreen());
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => ProfileBloc(ProfileRepository()),
+              child:  ProfileScreen(),
+            ),
+          ),
+        );
         break;
     }
   }

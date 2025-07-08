@@ -17,5 +17,41 @@ class AllBookingBloc extends Bloc<AllBookingEvent, AllBookingState> {
         emit(AllBookingError(e.toString()));
       }
     });
+
+    on<CompleteBookingEvent>((event, emit) async {
+      emit(AllBookingLoading());
+
+      try {
+        await repository.completeBooking(event.bookingId);
+
+        // Refetch updated list
+        final updatedBookings = await repository.fetchAllBookings(event.userId);
+
+        emit(AllBookingLoaded(updatedBookings));
+      } catch (e) {
+        emit(AllBookingError("Failed to complete booking: ${e.toString()}"));
+      }
+    });
+
+
+    on<CancelBookingEvent>((event, emit) async {
+      emit(AllBookingLoading());
+
+      try {
+        await repository.cancelbooking(event.bookingId);
+
+        // Refetch updated list
+        final updatedBookings = await repository.fetchAllBookings(event.userId);
+
+        emit(AllBookingLoaded(updatedBookings));
+      } catch (e) {
+        emit(AllBookingError("Failed to complete booking: ${e.toString()}"));
+      }
+    });
+
   }
+
+
+
 }
+

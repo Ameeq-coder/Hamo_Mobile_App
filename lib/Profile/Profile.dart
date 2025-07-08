@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 
+import '../Common/BottomSheet.dart';
 import 'bloc/profile_bloc.dart';
 import 'bloc/profile_event.dart';
 import 'bloc/profile_state.dart';
@@ -97,6 +98,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
+          bottomNavigationBar: BottomNavigation(currentIndex: 4),
+
         );
       },
     );

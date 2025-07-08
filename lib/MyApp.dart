@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hamo/Authentication/Screens/Login.dart';
 import 'package:hamo/Authentication/Screens/Signup.dart';
 import 'package:hamo/Authentication/bloc/auth/auth_bloc.dart';
 import 'package:hamo/Authentication/repository/auth_repository.dart';
 
+import 'Authentication/bloc/auth/Login_Bloc.dart';
 import 'BookingScreens/screens/MyBookings.dart';
 import 'Calender/Bloc/CalendarBookingBloc.dart';
 import 'Calender/Repositry/CalendarBookingRepository.dart';
@@ -22,10 +24,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileBloc(ProfileRepository()),
+      create: (_) => LoginBloc(AuthRepository()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ProfileScreen(),
+        home:LoginPage(),
       ),
     );
   }

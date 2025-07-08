@@ -106,7 +106,7 @@ class _CancelledScreenState extends State<CancelledScreen> {
                           CircleAvatar(
                             radius: 28,
                             backgroundImage: NetworkImage(
-                                'https://i.pravatar.cc/150?u=${item.servicemanId}'),
+                                item.serviceman.detail.imageUrl),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

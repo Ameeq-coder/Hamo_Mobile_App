@@ -12,6 +12,7 @@ class CalendarBooking {
   final String status;
   final DateTime bookingDateTime;
   final DateTime createdAt;
+  final String servicemanImageUrl; // Added serviceman image URL
 
   CalendarBooking({
     required this.id,
@@ -26,6 +27,8 @@ class CalendarBooking {
     required this.status,
     required this.bookingDateTime,
     required this.createdAt,
+    required this.servicemanImageUrl, // Added serviceman image URL
+
   });
 
   factory CalendarBooking.fromJson(Map<String, dynamic> json) {
@@ -42,6 +45,7 @@ class CalendarBooking {
       status: json['status'],
       bookingDateTime: DateTime.parse(json['bookingDateTime']),
       createdAt: DateTime.parse(json['createdAt']),
+      servicemanImageUrl: json['serviceman']?['detail']?['imageUrl'] ?? '', // Extracted image URL from the JSON
     );
   }
 }

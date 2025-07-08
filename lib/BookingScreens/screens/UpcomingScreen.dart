@@ -41,8 +41,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       const SizedBox(height: 20),
                       const Text(
                         "You have no upcoming booking",
-                        style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10),
@@ -66,7 +66,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                           child: const Text("Make New Booking",
                               style:
-                              TextStyle(fontSize: 16, color: Colors.white)),
+                                  TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       )
                     ],
@@ -94,9 +94,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   person: booking.serviceManName,
                   dateTime: booking.bookingDateTime.toString(),
                   location: booking.location,
-                  profileUrl:
-                  "https://i.pravatar.cc/150?u=${booking.servicemanId}",
-                  status: "Upcoming",
+                  profileUrl: booking.serviceman.detail.imageUrl,
+                  status: "Upcoming", bookingId: booking.id, userId:booking.userId ,
                 );
               },
             ),
@@ -120,6 +119,8 @@ class BookingCard extends StatelessWidget {
   final String location;
   final String profileUrl;
   final String status;
+  final String bookingId;
+  final String userId;
 
   const BookingCard({
     super.key,
@@ -131,6 +132,8 @@ class BookingCard extends StatelessWidget {
     required this.location,
     required this.profileUrl,
     required this.status,
+    required this.bookingId,
+    required this.userId,
   });
 
   Color getStatusColor(String status) {
@@ -159,7 +162,8 @@ class BookingCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 28, backgroundImage: NetworkImage(profileUrl)),
+              CircleAvatar(
+                  radius: 28, backgroundImage: NetworkImage(profileUrl)),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -171,7 +175,8 @@ class BookingCard extends StatelessWidget {
                     Text(person, style: const TextStyle(fontSize: 12)),
                     const SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: getStatusColor(status).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(8),
@@ -201,9 +206,12 @@ class BookingCard extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                const Icon(Icons.calendar_today, size: 16, color: Colors.black54),
+                const Icon(Icons.calendar_today,
+                    size: 16, color: Colors.black54),
                 const SizedBox(width: 8),
-                Expanded(child: Text(dateTime, style: const TextStyle(fontSize: 13))),
+                Expanded(
+                    child:
+                        Text(dateTime, style: const TextStyle(fontSize: 13))),
               ],
             ),
             const SizedBox(height: 8),
@@ -211,7 +219,9 @@ class BookingCard extends StatelessWidget {
               children: [
                 const Icon(Icons.location_on, size: 16, color: Colors.black54),
                 const SizedBox(width: 8),
-                Expanded(child: Text(location, style: const TextStyle(fontSize: 13))),
+                Expanded(
+                    child:
+                        Text(location, style: const TextStyle(fontSize: 13))),
               ],
             ),
             const SizedBox(height: 16),
@@ -220,22 +230,32 @@ class BookingCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // TODO: Cancel booking logic here
-                    },
+                      context.read<AllBookingBloc>().add(
+                        CancelBookingEvent(
+                          bookingId: bookingId,
+                          userId: userId,
+                        ),
+                      );
+                      },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.purple),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     ),
                     child: const Text("Cancel Booking",
-                        style: TextStyle(color: Colors.purple,fontSize: 12)),
+                        style: TextStyle(color: Colors.purple, fontSize: 12)),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: Complete booking logic here
+                      context.read<AllBookingBloc>().add(
+                            CompleteBookingEvent(
+                              bookingId: bookingId,
+                              userId: userId,
+                            ),
+                          );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,
@@ -243,7 +263,7 @@ class BookingCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10)),
                     ),
                     child: const Text("Complete Booking",
-                        style: TextStyle(color: Colors.white,fontSize: 12)),
+                        style: TextStyle(color: Colors.white, fontSize: 12)),
                   ),
                 ),
               ],
@@ -252,9 +272,8 @@ class BookingCard extends StatelessWidget {
           const SizedBox(height: 12),
           Center(
             child: IconButton(
-              icon: Icon(isOpen
-                  ? Icons.keyboard_arrow_up
-                  : Icons.keyboard_arrow_down),
+              icon: Icon(
+                  isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
               onPressed: onToggle,
             ),
           )

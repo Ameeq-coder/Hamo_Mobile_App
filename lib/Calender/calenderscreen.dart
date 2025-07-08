@@ -49,8 +49,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       'title': b.serviceType,
       'name': b.serviceManName,
       'status': b.status,
-      'image':
-      'https://via.placeholder.com/60x60.png?text=${b.serviceType.substring(0, 2).toUpperCase()}'
+       'image': b.servicemanImageUrl // Use the actual image URL from the model
     })
         .toList();
     setState(() {});
@@ -161,6 +160,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       itemCount: selectedBookings.length,
                       itemBuilder: (context, index) {
                         final booking = selectedBookings[index];
+                        final servicemanImageUrl = booking['image'];
+
                         return Container(
                           margin: const EdgeInsets.only(bottom: 16),
                           padding: const EdgeInsets.all(12),
@@ -172,11 +173,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.asset(
-                                  'assets/images/NoBooking.PNG',
+                                child: Image.network(
+                                  servicemanImageUrl!, // Use the service man's image URL
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/NoBooking.PNG', // Fallback image in case of error
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 12),

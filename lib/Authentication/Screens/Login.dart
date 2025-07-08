@@ -5,6 +5,8 @@ import 'package:hamo/Authentication/bloc/auth/Login_Bloc.dart';
 import 'package:hamo/Authentication/bloc/auth/login_event.dart';
 import 'package:hamo/Authentication/bloc/auth/login_state.dart';
 
+import '../../Home/Screens/Home.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -38,7 +40,12 @@ class _LoginPageState extends State<LoginPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('✅ Login successful')),
           );
-          // TODO: Navigate to home screen or dashboard
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const Home()),
+            );
+          });
         } else if (state is LoginFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('❌ ${state.error}')),

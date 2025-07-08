@@ -21,4 +21,33 @@ class AllBookingRepository {
       throw Exception('Failed to load bookings');
     }
   }
+
+  Future<String> completeBooking(String bookingId) async {
+    final url = Uri.parse(
+        'https://hamo-backend.vercel.app/api/v1/booking/specificbooking/$bookingId/complete');
+
+    final response = await http.put(url); // PUT method
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['message'];
+    } else {
+      throw Exception('Failed to complete booking');
+    }
+  }
+
+  Future<String> cancelbooking(String bookingId) async {
+    final url = Uri.parse(
+        'https://hamo-backend.vercel.app/api/v1/booking/specificbooking/$bookingId/cancel');
+
+    final response = await http.put(url); // PUT method
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['message'];
+    } else {
+      throw Exception('Failed to complete booking');
+    }
+  }
+
 }
