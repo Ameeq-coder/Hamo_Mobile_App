@@ -17,3 +17,16 @@ class CreateBookingFailure extends CreateBookingState {
 
   CreateBookingFailure(this.error);
 }
+
+
+class TimeSlotLoading extends CreateBookingState {}
+
+class TimeSlotLoaded extends CreateBookingState {
+  final List<String> availableSlots;
+  TimeSlotLoaded(this.availableSlots);
+}
+
+class TimeSlotError extends CreateBookingState {
+  final String error;
+  TimeSlotError(this.error);
+}

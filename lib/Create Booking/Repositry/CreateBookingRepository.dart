@@ -31,4 +31,22 @@ class CreateBookingRepository {
     }
   }
 
+
+
+  Future<List<String>> getAvailableTimeSlots(String servicemanId, String date) async {
+    final url = '$baseUrl/available-slots/$servicemanId/$date';
+    print(url);
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return List<String>.from(data['availableSlots']);
+      } else {
+        throw Exception('Failed to fetch available time slots');
+      }
+    } catch (e) {
+      throw Exception('Slot fetch error: $e');
+    }
+  }
+
 }

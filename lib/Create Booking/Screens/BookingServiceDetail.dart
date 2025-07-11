@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hamo/Create%20Booking/Screens/BookingDetailScreen.dart';
+import '../BLOC/CreateBookingBloc.dart';
+import '../Repositry/CreateBookingRepository.dart';
 
 class BookingServiceDetail extends StatelessWidget {
-
   final String userid;
   final String username;
   final String servicemanId;
@@ -10,8 +12,15 @@ class BookingServiceDetail extends StatelessWidget {
   final String servicetype;
   final int price;
 
-
-  const BookingServiceDetail({super.key, required this.userid, required this.username, required this.servicemanId, required this.serviceManName, required this.servicetype, required this.price});
+  const BookingServiceDetail({
+    super.key,
+    required this.userid,
+    required this.username,
+    required this.servicemanId,
+    required this.serviceManName,
+    required this.servicetype,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +40,19 @@ class BookingServiceDetail extends StatelessWidget {
           children: [
             const Text(
               'Enter Service you want',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: serviceController,
-              maxLines: 6, // Makes it look like a big box
+              maxLines: 6,
               decoration: InputDecoration(
                 hintText: 'Service you need',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16), // More space inside
+                contentPadding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               ),
             ),
             const SizedBox(height: 30),
@@ -55,14 +62,21 @@ class BookingServiceDetail extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                      MaterialPageRoute(
-                        builder: (_) => BookingDetailsScreen(userid: userid,
-                          username: username, servicemanId: servicemanId,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider(
+                        create: (_) => CreateBookingBloc(CreateBookingRepository()),
+                        child: BookingDetailsScreen(
+                          userid: userid,
+                          username: username,
+                          servicemanId: servicemanId,
                           serviceManName: serviceManName,
-                          servicetype: servicetype, price: price,
-                          serviceDescription: serviceController.text,),
-                      )
-                    );
+                          servicetype: servicetype,
+                          price: price,
+                          serviceDescription: serviceController.text,
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
@@ -70,7 +84,7 @@ class BookingServiceDetail extends StatelessWidget {
                 ),
                 child: const Text(
                   'Next',
-                  style: TextStyle(fontSize: 16,color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),

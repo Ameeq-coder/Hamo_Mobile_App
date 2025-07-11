@@ -16,5 +16,23 @@ class CreateBookingBloc extends Bloc<CreateBookingEvent, CreateBookingState> {
         emit(CreateBookingFailure(e.toString()));
       }
     });
+
+    on<FetchAvailableTimeSlots>((event, emit) async {
+      emit(TimeSlotLoading());
+      try {
+        final slots = await repository.getAvailableTimeSlots(event.servicemanId, event.date);
+        emit(TimeSlotLoaded(slots));
+      } catch (e) {
+        emit(TimeSlotError(e.toString()));
+      }
+    });
+
+
   }
+
+
+
+
 }
+
+
