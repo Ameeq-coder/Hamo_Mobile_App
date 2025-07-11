@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hamo/BookingScreens/screens/MyBookings.dart';
 
 // Dummy Screens
+import '../AllBookingScreens/screens/MyBookings.dart';
 import '../Authentication/bloc/auth/Login_Bloc.dart';
 import '../Authentication/repository/auth_repository.dart';
 import '../Calender/Bloc/CalendarBookingBloc.dart';

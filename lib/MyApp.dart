@@ -7,10 +7,11 @@ import 'package:hamo/Authentication/bloc/auth/auth_bloc.dart';
 import 'package:hamo/Authentication/repository/auth_repository.dart';
 
 import 'Authentication/bloc/auth/Login_Bloc.dart';
-import 'BookingScreens/screens/MyBookings.dart';
 import 'Calender/Bloc/CalendarBookingBloc.dart';
 import 'Calender/Repositry/CalendarBookingRepository.dart';
 import 'Calender/calenderscreen.dart';
+import 'Create Booking/Screens/BookingDetailScreen.dart';
+import 'Create Booking/Screens/BookingServiceDetail.dart';
 import 'Details/Screens/UserDetailScreen.dart';
 import 'Profile/Profile.dart';
 import 'Profile/Repositry/profile_repository.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       create: (_) => LoginBloc(AuthRepository()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:LoginPage(),
+        home:Home(),
       ),
     );
   }

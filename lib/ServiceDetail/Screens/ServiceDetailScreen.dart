@@ -4,15 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../Create Booking/Screens/BookingServiceDetail.dart';
 import '../Bloc/ServiceDetailEvent.dart';
 import '../Bloc/ServiceManDetailBloc.dart';
 import '../Bloc/ServiceManDetailState.dart';
 import '../Repositry/ServiceManDetailRepository.dart';
 
 class ServiceDetailScreen extends StatelessWidget {
+  final String userId;
+  final String username;
   final String serviceManId;
 
-  const ServiceDetailScreen({super.key, required this.serviceManId});
+  const ServiceDetailScreen({super.key, required this.serviceManId, required this.userId, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,16 @@ class ServiceDetailScreen extends StatelessWidget {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            // handle booking
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BookingServiceDetail(
+                                  servicemanId: detail.id,
+                                  serviceManName: detail.name, userid: userId, username: username,
+                                  servicetype: detail.category, price: detail.price ,      // Pass the name from API
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,

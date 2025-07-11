@@ -29,11 +29,12 @@ class _HomeState extends State<Home> {
   late AllServicemanBloc _servicemanBloc;
   String address = "";
 
+  String userId="";
   @override
   void initState() {
     super.initState();
     final box = Hive.box('userBox');
-    final userId = box.get('userId');
+     userId = box.get('userId');
     address = box.get('address') ?? "";
 
     _userBloc = HomeUserDetailBloc(HomeUserDetailRepository());
@@ -247,7 +248,10 @@ class _HomeState extends State<Home> {
                                         MaterialPageRoute(
                                           builder: (_) => BlocProvider(
                                             create: (_) => ServiceDetailBloc(ServiceDetailRepository()),
-                                            child:  ServiceDetailScreen(serviceManId: item.servicemenid,),
+                                            child:  ServiceDetailScreen(serviceManId: item.servicemenid,
+                                              userId: userId,
+                                              username: userName,
+                                            ),
                                           ),
                                         ),
                                       );

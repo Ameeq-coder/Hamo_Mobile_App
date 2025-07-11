@@ -1,4 +1,5 @@
 class ServiceDetail {
+  final String id;
   final String name;
   final String serviceHead;
   final String category;
@@ -8,6 +9,7 @@ class ServiceDetail {
   final String imageUrl;
 
   ServiceDetail({
+    required this.id,
     required this.name,
     required this.serviceHead,
     required this.category,
@@ -25,7 +27,7 @@ class ServiceDetail {
       location: json['location'],
       price: json['price'],
       about: json['about'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['imageUrl'], id: json['servicemanId'],
     );
   }
 }
