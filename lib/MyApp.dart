@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       create: (_) => LoginBloc(AuthRepository()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:Home(),
+        home:LoginPage(),
       ),
     );
   }

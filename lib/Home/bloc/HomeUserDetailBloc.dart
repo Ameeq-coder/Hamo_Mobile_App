@@ -16,6 +16,7 @@ class HomeUserDetailBloc extends Bloc<HomeUserDetailEvent, HomeUserDetailState> 
 
         final box = Hive.box('userBox');
         box.put('address', userDetail.address);
+        box.put('username', userDetail.name);
 
         emit(UserDetailLoaded(userDetail)); // ✅ Pass the required argument
       } catch (e) {

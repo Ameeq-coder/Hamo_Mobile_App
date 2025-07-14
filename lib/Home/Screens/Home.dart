@@ -7,6 +7,14 @@ import '../../Common/BottomSheet.dart';
 import '../../ServiceDetail/Bloc/ServiceManDetailBloc.dart';
 import '../../ServiceDetail/Repositry/ServiceManDetailRepository.dart';
 import '../../ServiceDetail/Screens/ServiceDetailScreen.dart';
+import '../../Services/Screens/AllServiceScreen.dart';
+import '../../Services/Screens/AppliancaceServiceScreen.dart';
+import '../../Services/Screens/CleaningServiceScreen.dart';
+import '../../Services/Screens/LaundryServiceScreen.dart';
+import '../../Services/Screens/PaintingServiceScreen.dart';
+import '../../Services/Screens/PlumbingServiceScreen.dart';
+import '../../Services/Screens/ReparingServiceScreen.dart';
+import '../../Services/Screens/ShiftingServiceScreen.dart';
 import '../bloc/AllServiceEvent.dart';
 import '../bloc/AllServiceManBloc.dart';
 import '../bloc/AllServiceManState.dart';
@@ -56,15 +64,55 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  final services = [
-    {'icon': FontAwesomeIcons.broom, 'label': 'Cleaning', 'color': Colors.purpleAccent},
-    {'icon': FontAwesomeIcons.screwdriverWrench, 'label': 'Repairing', 'color': Colors.orange},
-    {'icon': FontAwesomeIcons.paintRoller, 'label': 'Painting', 'color': Colors.lightBlue},
-    {'icon': FontAwesomeIcons.shirt, 'label': 'Laundry', 'color': Colors.amber},
-    {'icon': FontAwesomeIcons.plug, 'label': 'Appliance', 'color': Colors.redAccent},
-    {'icon': FontAwesomeIcons.wrench, 'label': 'Plumbing', 'color': Colors.green},
-    {'icon': FontAwesomeIcons.truck, 'label': 'Shifting', 'color': Colors.lightBlueAccent},
-    {'icon': FontAwesomeIcons.ellipsis, 'label': 'More', 'color': Colors.deepPurple},
+  final List<Map<String, dynamic>> services = [
+    {
+      'icon': FontAwesomeIcons.broom,
+      'label': 'Cleaning',
+      'color': Colors.purpleAccent,
+      'screen': CleaningServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.screwdriverWrench,
+      'label': 'Repairing',
+      'color': Colors.orange,
+      'screen': ReparingServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.paintRoller,
+      'label': 'Painting',
+      'color': Colors.lightBlue,
+      'screen': PaintingServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.shirt,
+      'label': 'Laundry',
+      'color': Colors.amber,
+      'screen': LaundryServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.plug,
+      'label': 'Appliance',
+      'color': Colors.redAccent,
+      'screen': AppliancesServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.wrench,
+      'label': 'Plumbing',
+      'color': Colors.green,
+      'screen': PlumbingServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.truck,
+      'label': 'Shifting',
+      'color': Colors.lightBlueAccent,
+      'screen': ShiftingServiceListScreen(),
+    },
+    {
+      'icon': FontAwesomeIcons.ellipsis,
+      'label': 'More',
+      'color': Colors.deepPurple,
+      'screen': AllServicesScreen(),
+    },
   ];
 
   final filters = ["All", "Cleaning", "Repairing", "Painting", "Laundry"];
@@ -172,23 +220,31 @@ class _HomeState extends State<Home> {
                           ),
                           itemBuilder: (context, index) {
                             final item = services[index];
-                            return Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: (item['color'] as Color).withOpacity(0.1),
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => item['screen']),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: (item['color'] as Color).withOpacity(0.1),
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    child: Icon(
+                                      item['icon'] as IconData,
+                                      color: item['color'] as Color,
+                                      size: 20,
+                                    ),
                                   ),
-                                  padding: const EdgeInsets.all(15),
-                                  child: Icon(
-                                    item['icon'] as IconData,
-                                    color: item['color'] as Color,
-                                    size: 20,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(item['label'] as String, style: const TextStyle(fontSize: 12)),
-                              ],
+                                  const SizedBox(height: 6),
+                                  Text(item['label'] as String, style: const TextStyle(fontSize: 12)),
+                                ],
+                              ),
                             );
                           },
                         ),

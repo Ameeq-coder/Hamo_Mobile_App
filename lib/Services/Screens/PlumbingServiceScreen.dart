@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 
 import '../../ServiceDetail/Bloc/ServiceManDetailBloc.dart';
 import '../../ServiceDetail/Repositry/ServiceManDetailRepository.dart';
@@ -12,18 +12,18 @@ import '../BLOC/ServicemanState.dart';
 import '../Models/ServiceManModel.dart';
 import '../Repositry/ServicemanRepository.dart';
 
-
-class CleaningServiceListScreen extends StatelessWidget {
-  const CleaningServiceListScreen({super.key});
+class PlumbingServiceListScreen extends StatelessWidget {
+  const PlumbingServiceListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     String userId="";
     final locationBox = Hive.box('userBox');
     final location = locationBox.get('address') ?? "";
-    const category = 'Cleaning';
+    const category = 'Plumbing';
     final username=locationBox.get('username');
     userId = locationBox.get('userId');
+
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
@@ -31,7 +31,7 @@ class CleaningServiceListScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: const BackButton(color: Colors.black),
-        title: const Text('Cleaning', style: TextStyle(color: Colors.black)),
+        title: const Text('Plumbing', style: TextStyle(color: Colors.black)),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
@@ -67,7 +67,6 @@ class CleaningServiceListScreen extends StatelessWidget {
                           ),
                         ),
                       );
-
                     },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20),
@@ -126,6 +125,10 @@ class CleaningServiceListScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                          const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Icon(FontAwesomeIcons.bookmark, size: 18, color: Colors.deepPurpleAccent),
+                          ),
                         ],
                       ),
                     ),
@@ -142,4 +145,5 @@ class CleaningServiceListScreen extends StatelessWidget {
       ),
     );
   }
+
 }
